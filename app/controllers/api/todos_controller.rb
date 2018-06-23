@@ -7,20 +7,20 @@ class Api::TodosController < ApplicationController
      render json: Todo.find_by(id: params[:todo_id])
   end
 
-  def create
-    @todo = Todo.new(todo_params)
-
-    if @todo.save
-      render :show, status: :created
+  def update
+    @todo = Todo.find(params[:todo_id])
+    if @todo.update(todo_params)
+      render json: Todo.find_by(id: params[:todo_id]), status: :ok
     else
       render json: @todo.errors, status: :unprocessable_entity
     end
   end
 
-  def update
-    @todo = Todo.find(params[:id])
-    if @todo.update(todo_params)
-      render :show, status: :ok
+  def create
+    @todo = Todo.new(todo_params)
+
+    if @todo.save
+      render json: Todo.find_by(id: params[:todo_id]), status: :created
     else
       render json: @todo.errors, status: :unprocessable_entity
     end
