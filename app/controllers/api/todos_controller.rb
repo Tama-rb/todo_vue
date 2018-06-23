@@ -1,36 +1,36 @@
 class Api::TodosController < ApplicationController
-  # GET /tasks
   def index
-    # 後々のため、更新順で返します
-    @tasks = Task.order('updated_at DESC')
+    render json: Todo.order('updated_at DESC')
   end
 
-  # POST /tasks
-  def create
-    @task = Task.new(task_params)
+  def show
+     render json: Todo.find_by(id: params[:todo_id])
+  end
 
-    if @task.save
+  def create
+    @todo = Todo.new(todo_params)
+
+    if @todo.save
       render :show, status: :created
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: @todo.errors, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /tasks/1
   def update
-    @task = Task.find(params[:id])
-    if @task.update(task_params)
+    @todo = Todo.find(params[:id])
+    if @todo.update(todo_params)
       render :show, status: :ok
     else
-      render json: @task.errors, status: :unprocessable_entity
+      render json: @todo.errors, status: :unprocessable_entity
     end
   end
 
   private
     # Never trust parameters from the scary internet, only allow the white list through.
-    def task_params
-      params.fetch(:task, {}).permit(
-          :name, :is_done
+    def todo_params
+      params.fetch(:todo, {}).permit(
+          :content, :is_done
       )
     end
 end

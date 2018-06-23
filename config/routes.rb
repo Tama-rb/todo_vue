@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   get 'top/index'
   resources :todos
 
-  namespace :api, format: 'json' do
-    resources :todos, only: [:index, :create, :update]
-  end
+  get 'api/todos/index' => 'api/todos#index'
+  get 'api/todos/show/:todo_id' => 'api/todos#show'
 end
